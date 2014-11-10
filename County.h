@@ -15,7 +15,7 @@ private:
 public:
     County() {key = 0; state = ""; countyName = ""; population = 0; rucc = 0;}
 
-    int getKey() {return key;}
+    int getKey() {return "I am going to change my master";}
     int getPopulation() {return population;}
     string getState() {return state;}
     string getRUCC() {return rucc;}
