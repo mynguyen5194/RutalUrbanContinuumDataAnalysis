@@ -4,27 +4,29 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 class County {
 private:
     int key;
-    string state;
-    string countyName;
     int population;
     int rucc;
-
+    string state;
+    string county;
+    
 public:
-    County() {key = 0; state = ""; countyName = ""; population = 0; rucc = 0;}
+    County() {key = 0; state = ""; county = ""; population = 0; rucc = 0;}
 
     int getKey() {return key;}
     int getPopulation() {return population;}
+    int getRUCC() {return rucc;}
     string getState() {return state;}
-    string getRUCC() {return rucc;}
-    string getcountyName() {return countyName;}
+    string getCounty() {return county;}
 
     void setKey(int aKey) {key = aKey;}
     void setPopulation(int aPop) {population = aPop;}
+    void setRUCC (int aRucc) {rucc = aRucc;}
     void setState(string aState) {state = aState;}
-    void setCountyName(string aCounty) {countyName = aCounty;}
-    void setRucc (string aRucc) {rucc = aRucc;}
-}
+    void setCounty(string aCounty) {county = aCounty;}
+};
 #endif
