@@ -31,6 +31,7 @@ int main() {
     for (int i = 0; i < LIST_LENGTH; i++) {
         cout << "county name: " << (counties + i)->getCounty() << endl;
     }
+    
 //    menu(counties);
     
     return 0;
