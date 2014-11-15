@@ -32,7 +32,7 @@ int main() {
         cout << "county name: " << (counties + i)->getCounty() << endl;
     }
     
-//    menu(counties);
+
     
     return 0;
 }
