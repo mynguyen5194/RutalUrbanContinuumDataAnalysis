@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-//push for meeeee
-
 using namespace std;
 
 class County {
