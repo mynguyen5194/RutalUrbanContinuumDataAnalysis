@@ -13,20 +13,20 @@ private:
     int rucc;
     string state;
     string county;
+    County * next;
     
 public:
-    County() {key = 0; state = ""; county = ""; population = 0; rucc = 0;}
+    County() {key = 0; state = ""; county = ""; population = 0; rucc = 0; next = NULL;}
 
     int getKey() {return key;}
     int getPopulation() {return population;}
     int getRUCC() {return rucc;}
     string getState() {return state;}
     string getCounty() {return county;}
+    County * getNext() {return next;}
 
-    void setKey(int aKey) {key = aKey;}
-    void setPopulation(int aPop) {population = aPop;}
-    void setRUCC (int aRucc) {rucc = aRucc;}
-    void setState(string aState) {state = aState;}
-    void setCounty(string aCounty) {county = aCounty;}
+    void setNext(County * Next) {next = Next;}
+    void setInfo(int Key, string State, string County, int Population, int Rucc)
+    {key = Key; state = State; county = County; population = Population; rucc = Rucc;}
 };
 #endif

@@ -1,4 +1,5 @@
 01001	AL	Autauga County	54,571	2
+13319	GA	Wilkinson County	9,563	8
 01003	AL	Baldwin County	182,265	3
 01005	AL	Barbour County	27,457	6
 04025	AZ	Yavapai County	211,033	3
@@ -11,11 +12,10 @@
 11001	DC	District of Columbia	601,723	1
 12001	FL	Alachua County	247,336	2
 13317	GA	Wilkes County	10,593	6
-13319	GA	Wilkinson County	9,563	8
 13321	GA	Worth County	21,679	3
 15001	HI	Hawaii County	185,079	5
-15003	HI	Honolulu County	953,207	2
+15003	HI	Honolulu County 953,207	2
 15005	HI	Kalawao County	90	3
 15007	HI	Kauai County	67,091	5
 15009	HI	Maui County	154,834	3
-16001	ID	Ada County	392,365	2
+16001   ID	Ada County	392,365	2

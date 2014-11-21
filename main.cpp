@@ -10,27 +10,28 @@
 #include <string>
 #include <fstream>
 #include "County.h"
+#include "HashTable.h"
 
 #define KEY_LENGTH 5
 #define STATE_LENGTH 2
 #define LIST_LENGTH 22
 
+// Functions Prototypes
+void display(County & county);
 using namespace std;
 
 // Functions prototypes
-bool readFile(County* counties);
+bool readFile(HashTable<County>* counties);
 bool isNumber(char character);
 void menu(County * counties);
 void help();
 
 int main() {
-    County* counties = new County[LIST_LENGTH];
+    HashTable<County> * counties = new HashTable<County>();
     
     readFile(counties);
     
-    for (int i = 0; i < LIST_LENGTH; i++) {
-        cout << "county name: " << (counties + i)->getCounty() << endl;
-    }
+    
     
     // menu(counties);
     
@@ -38,10 +39,69 @@ int main() {
 }
 
 // ********************************************
+//  display function
+// ********************************************
+void display(County & county) {
+    if (county.getKey() != 0 && county.getPopulation() != 0)
+        cout << county.getKey() << " " << county.getState() << " " << county.getCounty() << " "
+            << county.getPopulation() << " " << county.getRUCC() << endl;
+    return;
+}
+// ********************************************
 //  readFile function
 // ********************************************
-bool readFile(County* counties) {
+bool readFile(HashTable<County> * counties) {
     ifstream inFile;
+    int key, population, rucc;
+    string line, state, county, pop;
+    string delimiter = "\t";
+    bool empty = true;
+    size_t endPos;
+    County countyInfo;
+    
+    inFile.open("/Users/mynguyen5194/Desktop/TeamProject/TeamProject/TeamProject/RU_database.txt");
+    if (!inFile) {
+        cout << "Error opening file 'RU_database.txt'\n";
+        return false;
+    }
+    while (getline(inFile, line)) {
+     
+        endPos = line.find(delimiter);
+        key = atoi(line.substr(0, endPos).c_str());
+        state = line.substr(endPos+1, 2);
+        line.erase(0, endPos+4);
+        
+        endPos = line.find(delimiter);
+        county = line.substr(0, endPos);
+        line.erase(0, endPos+1);
+        
+        endPos = line.find(delimiter);
+        pop = line.substr(0, endPos);
+        for (size_t i = 0; i < pop.length(); i++) {
+            if (pop[i] == ',') {
+                pop.erase(i, 1);   // Erase the ,
+            }
+        }
+        population = atoi(pop.c_str());
+        line.erase(0, endPos+1);
+        
+        rucc = atoi(line.substr(0, 1).c_str());
+        
+        countyInfo.setInfo(key, state, county, population, rucc);
+        counties->insert(countyInfo);
+        
+        empty = false;
+    }
+    
+    inFile.close();
+    
+    if (empty) {
+        return false;
+    }
+
+    return true;
+    
+/*    ifstream inFile;
     string line;
     string key_s = "";
     string rucc_s = "";
@@ -121,8 +181,9 @@ bool readFile(County* counties) {
     }
     
     inFile.close();
-    
+
     return true;
+*/
 }
 
 // ********************************************
