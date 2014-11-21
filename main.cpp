@@ -24,7 +24,8 @@ void menu(County * counties);
 void help();
 
 int main() {
-    County* counties = new County[LIST_LENGTH];
+    //table
+	//tree
     
     readFile(counties);
     
@@ -66,7 +67,7 @@ bool readFile(County* counties) {
         
         
             //read states
-            for (int i = 5; i <= 5 + STATE_LENGTH; i++)
+            for (int i = KEY_LENGTH; i <= KEY_LENGTH + STATE_LENGTH; i++)
                 state += line[i];
         
             int start_county = 9; //where county names start, always 9
@@ -104,6 +105,9 @@ bool readFile(County* counties) {
             (counties + index)->setRUCC(rucc);
             (counties + index)->setState(state);
         
+			//insert country node
+
+
             //reset strings
             key_s = "";
             state = "";
