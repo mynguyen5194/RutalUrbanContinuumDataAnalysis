@@ -23,14 +23,20 @@ using namespace std;
 // Functions prototypes
 bool readFile(HashTable<County>* counties);
 bool isNumber(char character);
-void menu(County * counties);
+//void menu(County * counties);
+void menu(County * counties,  HashTable<County> * countiesTable); 
+//void searchManager(int target, HashTable<County> * counties);
+void searchManager(int target, HashTable<County> * countiesTable);
 void help();
 
 int main() {
+	
+	//HashTable<County> * counties = new HashTable<County>();
+	HashTable<County> * countiesTable = new HashTable<County>();
 
-	HashTable<County> * counties = new HashTable<County>();
+	readFile(countiesTable);
 
-	readFile(counties);
+	//menu
 
     return 0;
 }
@@ -196,9 +202,10 @@ bool isNumber(char character) {
 // ********************************************
 //  menu function
 // ********************************************
-void menu(County * counties) {
+void menu(County * counties,  HashTable<County> * countiesTable) {
     string option;
-    
+	int FIPS; //unique key for searchByKey
+
     do {
         cout << "Please enter your option: ";
         getline(cin, option);
@@ -213,15 +220,20 @@ void menu(County * counties) {
                 break;
                 
             case 'S':
-        // Search
+				//Search by Key
+					cout << "Enter FIPS: ";
+					cin >> FIPS;
+					searchManager(FIPS, countiesTable); //hashTable cant also be named counties
                 break;
                 
             case 'L':
         // List data in hash table sequence
+				countiesTable->printHashTable(display);
                 break;
                 
             case 'K':
         // List data in key sequence (sorted)
+				//need in-order traversal of BST
                 break;
                 
             case 'P':
@@ -263,4 +275,29 @@ void help() {
         << "I - Hast statistics (info) \n"
         << "H - Help \n";
     return;
+}
+
+/**********
+searchManager takes in a target, HashTable, and BST
+and calls both the Hash and BST search with the target
+*********/
+void searchManager(int target, HashTable<County> * counties)
+{
+	if(isNumber(target))
+	{
+		//instantiate a county with target
+		County targetCounty;
+		County foundCounty;
+
+		targetCounty.setKey(target);
+
+		//hash table search
+		counties->search(targetCounty, foundCounty);
+
+		//BST search
+
+	}
+
+	else
+		cout << "invalid search key\n";
 }

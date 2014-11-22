@@ -26,6 +26,7 @@ public:
     County * getNext() {return next;}
 
     void setNext(County * Next) {next = Next;}
+	void setKey(int aKey) {key = aKey;}
     void setInfo(int Key, string State, string County, int Population, int Rucc)
     {key = Key; state = State; county = County; population = Population; rucc = Rucc;}
 };
