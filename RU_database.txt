@@ -4,18 +4,18 @@
 01005	AL	Barbour County	27,457	6
 04025	AZ	Yavapai County	211,033	3
 04027	AZ	Yuma County	195,751	3
-05001	AR	Arkansas County	19,019	6
 05003	AR	Ashley County	21,853	7
+15005	HI	Kalawao County	90	3
 08125	CO	Yuma County	10,043	7
+15007	HI	Kauai County	67,091	5
 09001	CT	Fairfield County	916,829	2
 10005	DE	Sussex County	197,145	2
 11001	DC	District of Columbia	601,723	1
+13029	GA	Carbon County	30,233	2
 12001	FL	Alachua County	247,336	2
+05001	AR	Arkansas County	19,019	6
 13317	GA	Wilkes County	10,593	6
+15009	HI	Maui County	154,834	3
 13321	GA	Worth County	21,679	3
 15001	HI	Hawaii County	185,079	5
-15003	HI	Honolulu County 953,207	2
-15005	HI	Kalawao County	90	3
-15007	HI	Kauai County	67,091	5
-15009	HI	Maui County	154,834	3
-16001   ID	Ada County	392,365	2
+13127	GA	Catoosa County	79,626	3
