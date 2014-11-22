@@ -27,11 +27,17 @@ void menu(County * counties);
 void help();
 
 int main() {
+    //table
+	//tree
+    HashTable<County> * counties = new HashTable<County>();
 
-	HashTable<County> * counties = new HashTable<County>();
-
-	readFile(counties);
-
+    
+    readFile(counties);
+    
+    
+    
+    // menu(counties);
+    
     return 0;
 }
 
