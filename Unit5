@@ -1,0 +1,48 @@
+/*~*~
+Didn't #include any processor, namespace,and
+prototype since these functions will be used
+in other source file.
+*~*/
+
+// ********************************************
+//  determineHashSize Function
+//  Define hash table size by counted number of
+//  the lines in the input file, multiply it by 2,
+//  and choose the next prime number.
+//  Data in: int number of input file lines
+//  Data out: int number of hash size
+// ********************************************
+int determineHashSize(int inFileCount) {
+    int MAX_HASH_SIZE = 0;
+    bool prime = false;
+    while (!prime) {
+        if (((inFileCount * 2) + 1) % 2 == 0) {             // technically this if statement
+            inFileCount++;                                  // doesn't have to exist.
+        } else if (((inFileCount * 2) + 1) % 2 != 0) {
+            prime = isPrime((inFileCount * 2) + 1);
+            if (prime) {
+                break;
+            }
+        }
+        inFileCount++;
+    }
+    MAX_HASH_SIZE = (inFileCount * 2) + 1;
+
+    return MAX_HASH_SIZE;
+}
+
+// ********************************************
+//  isPrime Function
+//  Check if the received number is prime number or not.
+//  Data in: int number
+//  Data out: bool true or false
+// ********************************************
+bool isPrime(int checkPrime) {
+    int index = 1;
+    for (int index = 3; index < checkPrime; index += 2) {
+        if ((checkPrime % index) == 0 && index != 1) {
+            return false;
+        }
+    }
+    return true;
+}
