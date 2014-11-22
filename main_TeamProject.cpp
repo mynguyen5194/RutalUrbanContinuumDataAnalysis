@@ -61,7 +61,7 @@ bool readFile(HashTable<County> * countyHash, BinarySearchTree<County> * countyT
     size_t endPos;
     County countyInfo;
     
-    inFile.open("/Users/mynguyen5194/Desktop/TeamProject/TeamProject/TeamProject/RU_database.txt");
+    inFile.open("RU_database.txt");
     if (!inFile) {
         cout << "Error opening file 'RU_database.txt'\n";
         return false;
