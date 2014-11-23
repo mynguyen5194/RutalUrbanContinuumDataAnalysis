@@ -25,8 +25,8 @@ void eliminateComma(string & line);
 bool isNumeric(string numStr);
 void Depth_First_Traversals(BinarySearchTree<County>* tree);
 void searchManager(int target, HashTable<County> * counties, BinarySearchTree<County> * countyTree);
-/*
 void Depth_First_Traversals_Iterative(BinarySearchTree<County>*tree);
+/*
 void Search_county(BinarySearchTree<County> *tree);
 */
 void showMenu();
@@ -63,7 +63,7 @@ bool readFile(HashTable<County> * countyHash, BinarySearchTree<County> * countyT
     size_t endPos;
     County countyInfo;
     
-    inFile.open("RU_database.txt");
+    inFile.open("/Users/mynguyen5194/Desktop/TeamProject/TeamProject/TeamProject/RU_database.txt");
     if (!inFile) {
         cout << "Error opening file 'RU_database.txt'\n";
         return false;
@@ -155,12 +155,12 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree)
                     // Recursive Depth-First Traversals:inorder, preorder, postorder
                     Depth_First_Traversals(countyTree);
                     break;
-/*
+
                 case 'I':
                     // Print indented tree
                     countyTree->Print_Indented_Tree();
                     break;
-                    
+/*
                 case 'E':
                     // Print indented tree
                     break;
@@ -195,14 +195,14 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree)
 void searchCounty (HashTable<County> * countyHash) {
     string state = "", county = "";
     int key, population = 0, rucc = 0;
-    County countyPtr;
+    County countyInfo;
     cout << " ~*~ Search County Information ~*~\n";
     cout << "Please enter the county's key (FIPS): ";
     cin >> key;
     
-    countyPtr.setInfo(key, state, county, population, rucc);
-    if (countyHash->search(countyPtr, countyPtr))
-        display(countyPtr);
+    countyInfo.setInfo(key, state, county, population, rucc);
+    if (countyHash->search(countyInfo, countyInfo))
+        display(countyInfo);
     else
         cout << "The county is not in the list!\n";
     return;
