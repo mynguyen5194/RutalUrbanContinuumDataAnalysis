@@ -24,6 +24,7 @@ void insert (HashTable<County> * countyHash);
 void eliminateComma(string & line);
 bool isNumeric(string numStr);
 void Depth_First_Traversals(BinarySearchTree<County>* tree);
+void searchManager(int target, HashTable<County> * counties, BinarySearchTree<County> * countyTree);
 /*
 void Depth_First_Traversals_Iterative(BinarySearchTree<County>*tree);
 void Search_county(BinarySearchTree<County> *tree);
@@ -50,6 +51,7 @@ void display(County & county) {
             << "\t" << county.getPopulation() << "\t" << county.getRucc() << endl;
     return;
 }
+
 // ********************************************
 //  readFile function
 // ********************************************
@@ -320,4 +322,34 @@ void showMenu() {
         << "I - Hast statistics (info) \n"
         << "H - showMenu \n";
     return;
+}
+
+
+/**********
+searchManager takes in a target, HashTable, and BST
+and calls both the Hash and BST search with the target
+*********/
+void searchManager(string target, HashTable<County> * counties, BinarySearchTree<County> * countyTree)
+{
+	if(!isNumeric(target))
+	{
+		cout << "invalid search key\n";
+		return;
+	}
+	
+	//instantiate a county with target
+	County targetCounty;
+	County foundCounty_hash;
+	County foundCounty_tree;
+	
+	//change string target to int
+	int targetNum = stoi(target);
+		
+	targetCounty.setKey(targetNum);
+
+	//hash table search
+	counties->search(targetCounty, foundCounty_hash);
+
+	//BST search
+	//countyTree->getEntry(targetCounty, foundCounty_tree); //BST search and HashSearch take in different types of targets
 }
