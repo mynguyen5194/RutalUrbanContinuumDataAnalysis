@@ -18,9 +18,9 @@ private:
 public:
     County() {key = 0; state = ""; county = ""; population = 0; rucc = 0; next = NULL;}
 
-    int getKey() {return key;}
+    int getKey() const {return key;}
     int getPopulation() {return population;}
-    int getRUCC() {return rucc;}
+    int getRucc() {return rucc;}
     string getState() {return state;}
     string getCounty() {return county;}
     County * getNext() {return next;}

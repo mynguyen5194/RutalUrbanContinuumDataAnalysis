@@ -2,8 +2,8 @@
 //  HashTable.h
 //  lab5
 //
-//  Created by My Nguyen on 11/12/14.
-//  Copyright (c) 2014 MyNguyen. All rights reserved.
+//  Created by Team #2 on 11/12/14.
+//  Copyright (c) 2014 Team #2. All rights reserved.
 //
 #include <iostream>
 
@@ -12,7 +12,7 @@ using namespace std;
 #ifndef lab5_HashTable_h
 #define lab5_HashTable_h
 
-#define TABLE_SIZE 31
+#define TABLE_SIZE 15
 
 template <class ItemType>
 class HashTable {
@@ -29,11 +29,13 @@ public:
     int hash(const ItemType & newEntry);
     bool insert(const ItemType & newEntry);
     bool search(const ItemType & target, ItemType & returnTarget);
+    bool deleteNode(const ItemType & target);
     void printItem(ItemType * nodePtr, bool displayList, void visit(ItemType &));
     void displayList(void visit(ItemType &));
     void printHashTable(void visit(ItemType &));
     void statistics();
     int countNode(int index);
+
 };
 
 // **************************************
@@ -77,7 +79,7 @@ HashTable<ItemType>::~HashTable<ItemType>() {
 template <class ItemType>
 bool HashTable<ItemType>::isEmpty() {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        if (table[i].getTitle() == "") {
+        if (table[i].getKey() == 0) {
             return false;
         }
     }
@@ -92,7 +94,7 @@ bool HashTable<ItemType>::isEmpty() {
 //  Return: a hashed number
 // *************************************************
 template <class ItemType>
-int HashTable<ItemType>::hash(ItemType & newEntry) {
+int HashTable<ItemType>::hash(const ItemType & newEntry) {
     return ((newEntry.getKey()) % TABLE_SIZE);
 }
 
@@ -146,7 +148,7 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
     ItemType * nodePtr = &table[index];
     
     while (nodePtr) {
-        if (nodePtr->getTitle() == target.getTitle()) {
+        if (nodePtr->getKey() == target.getKey()) {
             returnTarget = *nodePtr;
             found = true;
         }
@@ -159,6 +161,19 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
     return found;
 }
 
+// **************************************************
+//  deleteNode function
+// **************************************************
+template <class ItemType>
+bool HashTable<ItemType>::deleteNode(const ItemType &target) {
+    bool deleted = false;
+    
+//    int index = hash(target);
+    
+    
+    return deleted;
+}
+
 // ********************************************
 //  printItem function
 //  This function prints out the year and title
@@ -168,7 +183,8 @@ template <class ItemType>
 void HashTable<ItemType>::printItem(ItemType * nodePtr, bool displayList , void visit(ItemType &)) {
     ItemType item;
 
-    item.setInfo(nodePtr->getYear(), nodePtr->getTitle());
+    item.setInfo(nodePtr->getKey(), nodePtr->getState(), nodePtr->getCounty(),
+                 nodePtr->getPopulation(), nodePtr->getRucc());
     if (!displayList) {
         cout << "\t\t ";
     }
@@ -211,7 +227,7 @@ void HashTable<ItemType>::printHashTable(void (visit)(ItemType &)) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         ItemType * nodePtr = &table[i];
         cout << "Index " << i << ": ";
-        if (nodePtr->getYear() != -1) {
+        if (nodePtr->getKey() != 0) {
             printItem(nodePtr, true, visit);
             
             // Print the linked list if any
