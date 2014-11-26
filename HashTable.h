@@ -32,7 +32,7 @@ public:
     int hash(const ItemType & newEntry);
     bool insert(const ItemType & newEntry);
     bool search(const ItemType & target, ItemType & returnTarget);
-    bool remove(const ItemType * target, stack<ItemType*> & Stack);
+    bool remove(const ItemType target, stack<ItemType*> & Stack);
     void printItem(ItemType * nodePtr, bool displayList, void visit(ItemType &));
     void displayList(void visit(ItemType &));
     void printHashTable(void visit(ItemType &));
@@ -169,21 +169,21 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
 //  remove function
 // **************************************************
 template <class ItemType>
-bool HashTable<ItemType>::remove(const ItemType * target, stack<ItemType*> &Stack) {
+bool HashTable<ItemType>::remove(const ItemType target, stack<ItemType*> &Stack) {
     bool deleted = false;
     ItemType * delPtr;
     
-    int index = hash(*target);
+    int index = hash(target);
     
     if (table[index].getKey() != 0) {
         ItemType * tempPtr = NULL;
         ItemType * nodePtr = &table[index];
-        while (nodePtr->getNext() != NULL && nodePtr->getKey() != target->getKey()) {
+        while (nodePtr->getNext() != NULL && nodePtr->getKey() != target.getKey()) {
             tempPtr = nodePtr;
             nodePtr = nodePtr->getNext();
         }
         
-        if (nodePtr->getKey() == target->getKey()) {
+        if (nodePtr->getKey() == target.getKey()) {
             // If the target is found in the hash table
             if (tempPtr == NULL) {
                 delPtr = new ItemType(table[index]);

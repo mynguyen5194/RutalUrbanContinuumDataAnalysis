@@ -18,7 +18,7 @@ private:
 	BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);
    
 	// internal remove node: locate and delete target node under nodePtr subtree
-	BinaryNode<ItemType>* _remove(BinaryNode<ItemType>* nodePtr, const int target, bool & success, stack<ItemType*> & Stack);
+	BinaryNode<ItemType>* _remove(BinaryNode<ItemType>* nodePtr, const ItemType target, bool & success, stack<ItemType*> & Stack);
    
 	// delete target node from tree, called by internal remove node
 	BinaryNode<ItemType>* deleteNode(BinaryNode<ItemType>* targetNodePtr);
@@ -27,16 +27,16 @@ private:
 	BinaryNode<ItemType>* removeLeftmostNode(BinaryNode<ItemType>* nodePtr, ItemType & successor);
    
 	// search for target node
-	BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const int & target) const;
+	BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const ItemType & target) const;
    
 
 public:
 	// insert a node at the correct location
     bool insert(const ItemType & newEntry);
 	// remove a node if found
-	bool remove(const int & anEntry, stack<ItemType*> & Stack);
+	bool remove(const ItemType & anEntry, stack<ItemType*> & Stack);
 	// find a target node
-	bool getEntry(const int & target, ItemType & returnedItem) const;
+	bool getEntry(const ItemType & target, ItemType & returnedItem) const;
 	// Print sub tree
 	bool getGreater(const int & target,void visit(ItemType &)) const;
 	void _subGreater(const int & target, void visit(ItemType &), BinaryNode<ItemType> *nodePtr) const;
@@ -56,7 +56,7 @@ bool BinarySearchTree<ItemType>::insert(const ItemType & newEntry)
 }  
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::remove(const int & target, stack<ItemType*> & Stack)
+bool BinarySearchTree<ItemType>::remove(const ItemType & target, stack<ItemType*> & Stack)
 {
 	bool isSuccessful = false;
 	this->rootPtr = _remove(this->rootPtr, target, isSuccessful, Stack);
@@ -64,7 +64,7 @@ bool BinarySearchTree<ItemType>::remove(const int & target, stack<ItemType*> & S
 }  
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::getEntry(const int& anEntry, ItemType & returnedItem) const
+bool BinarySearchTree<ItemType>::getEntry(const ItemType & anEntry, ItemType & returnedItem) const
 {
 	BinaryNode<ItemType> *found = findNode(this->rootPtr, anEntry);
 	if(found)
@@ -136,7 +136,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* 
 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* nodePtr,
-                                                          const int target,
+                                                          const ItemType target,
                                                           bool & success, stack<ItemType*> & Stack)
 
 {
@@ -145,9 +145,9 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* 
 		success = false;
 		return 0;
 	}
-	if (nodePtr->getItem().getKey() > target)		 
+	if (nodePtr->getItem().getKey() > target.getKey())
 		nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success, Stack));
-	else if (nodePtr->getItem().getKey() < target)	 
+	else if (nodePtr->getItem().getKey() < target.getKey())
 		nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success, Stack));
 	else		
 	{
@@ -211,17 +211,17 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::removeLeftmostNode(BinaryNode<
 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode(BinaryNode<ItemType>* nodePtr,
-                                                           const int & target) const 
+                                                           const ItemType & target) const
 {
 	if(!nodePtr)
 		return nodePtr;
 	BinaryNode<ItemType> *pWalk = nodePtr;
 	while(pWalk)
 	{
-		if(target < pWalk->getItem().getKey())
+		if(target.getKey() < pWalk->getItem().getKey())
 			pWalk = pWalk->getLeftPtr();
 		else
-			if(target > pWalk->getItem().getKey())
+			if(target.getKey() > pWalk->getItem().getKey())
 				pWalk = pWalk->getRightPtr();
 			else 
 				return pWalk;

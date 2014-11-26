@@ -44,8 +44,8 @@ public:
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType & newData) = 0; 
-	virtual bool remove(const int & data, stack<ItemType*> & Stack) = 0;
-	virtual bool getEntry(const int & anEntry, ItemType & returnedItem) const = 0;
+	virtual bool remove(const ItemType & data, stack<ItemType*> & Stack) = 0;
+	virtual bool getEntry(const ItemType & anEntry, ItemType & returnedItem) const = 0;
 
 private:   
 	// delete all nodes from the tree
@@ -143,8 +143,8 @@ void BinaryTree<ItemType>::_print_indented(BinaryNode<ItemType>* nodePtr, int le
 		cout << setw(space) <<level <<".\n";
 		return;
 	}
-	cout << setw(space) <<level <<"." << nodePtr->getItem().getKey() << " " << nodePtr->getItem().getPopulation() << " " << nodePtr->getItem().getRucc()
-		 << " " << nodePtr->getItem().getState() << " " << nodePtr->getItem().getCounty() << endl;
+	cout << setw(space) <<level <<"." << nodePtr->getItem().getKey() << "\t" << nodePtr->getItem().getState() << "\t" << nodePtr->getItem().getCounty()
+		 << "\t" << nodePtr->getItem().getPopulation() << "\t" << nodePtr->getItem().getRucc() << endl;
 	
 		_print_indented(nodePtr->getLeftPtr(), ++level, space=space+5);
 		_print_indented(nodePtr->getRightPtr(),level, space);
