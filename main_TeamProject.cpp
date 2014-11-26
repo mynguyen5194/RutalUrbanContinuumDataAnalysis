@@ -12,32 +12,35 @@
 #include "County.h"
 #include "HashTable.h"
 #include "BinarySearchTree.h"
-
+#include <stack>
+#define LIST_SIZE 40
 using namespace std;
 
 // Functions prototypes
 void display(County & county);
 bool readFile (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
-void menu (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
+void menu (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack);
 void searchCounty (HashTable<County> * countyHash);
 void insert (HashTable<County> * countyHash);
 void eliminateComma(string & line);
+int determineHashSize(int inFileCount);
+bool isPrime(int checkPrime);
 bool isNumeric(string numStr);
+
 void Depth_First_Traversals(BinarySearchTree<County>* tree);
 void searchManager(int target, HashTable<County> * counties, BinarySearchTree<County> * countyTree);
 void Depth_First_Traversals_Iterative(BinarySearchTree<County>*tree);
-/*
-void Search_county(BinarySearchTree<County> *tree);
-*/
 void showMenu();
 
 int main() {
-    HashTable<County> * countyHash = new HashTable<County>();
+    const int hashTableSize = determineHashSize(LIST_SIZE);
+    
+    stack<County*> Stack;
+    HashTable<County> * countyHash = new HashTable<County>(hashTableSize);
     BinarySearchTree<County> * countyTree = new BinarySearchTree<County>();
     
     readFile(countyHash, countyTree);
-    
-    menu(countyHash, countyTree);
+    menu(countyHash, countyTree, Stack);
     
     return 0;
 }
@@ -88,11 +91,13 @@ bool readFile(HashTable<County> * countyHash, BinarySearchTree<County> * countyT
         rucc = atoi(line.substr(0, 1).c_str());
         
         countyInfo.setInfo(key, state, county, population, rucc);
+        
         countyHash->insert(countyInfo);
         countyTree->insert(countyInfo);
-        
+
         empty = false;
     }
+
     
     inFile.close();
     
@@ -106,8 +111,10 @@ bool readFile(HashTable<County> * countyHash, BinarySearchTree<County> * countyT
 // ********************************************
 //  menu function
 // ********************************************
-void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree) {
+void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack) {
     string option;
+    string state = "", countyName = "";
+    int population = 0, rucc = 0;
 
     do {
         cout << "Please enter your option: ";
@@ -123,6 +130,11 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree)
             
                 case 'D':
                     // Delete data (both BST & hash table)
+                    County * county;
+                    county->setInfo(1129, state, countyName, population, rucc);
+                    countyTree->remove(2050, Stack);
+                    countyHash->remove(county, Stack);
+                    
                     break;
                 
                 case 'S':   // By both ??????? (hash is faster)
@@ -160,17 +172,21 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree)
                     // Print indented tree
                     countyTree->Print_Indented_Tree();
                     break;
-/*
-                case 'E':
-                    // Print indented tree
+
+                case 'Z':
+                    // Undo delete
+                    County * aCounty;
+                    aCounty = Stack.top();
+                    cout << aCounty->getCounty();
+                    Stack.pop();
+                    
+                    aCounty = Stack.top();
+                    cout << aCounty->getCounty();
+                    
+                    
+                   // display(*aCounty);
                     break;
                     
-                case 'X':
-                    //Delete a node in a tree
-                    int remove_key;
-                    cin >> remove_key;
-                    countyTree->remove(remove_key);
-*/
                 case 'W':
                     // Write data to a file
                     break;
@@ -193,18 +209,24 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree)
 //  Search_county function
 // ********************************************
 void searchCounty (HashTable<County> * countyHash) {
-    string state = "", county = "";
-    int key, population = 0, rucc = 0;
+    string state = "", county = "", key;
+    int population = 0, rucc = 0;
     County countyInfo;
     cout << " ~*~ Search County Information ~*~\n";
     cout << "Please enter the county's key (FIPS): ";
-    cin >> key;
+
+    getline(cin, key);
+    if (isNumeric(key)) {
+        countyInfo.setInfo(atoi(key.c_str()), state, county, population, rucc);
+        if (countyHash->search(countyInfo, countyInfo))
+            display(countyInfo);
+        else
+            cout << "The county is not in the list!\n";
+    }
     
-    countyInfo.setInfo(key, state, county, population, rucc);
-    if (countyHash->search(countyInfo, countyInfo))
-        display(countyInfo);
+
     else
-        cout << "The county is not in the list!\n";
+        cout << "Invalid input!\n";
     return;
 }
 
@@ -260,6 +282,43 @@ void eliminateComma (string & line) {
             line.erase(i, 1);   // Erase comma if any
     }
     return;
+}
+
+// ********************************************
+//  determineHashSize Function
+//  Define hash table size by counted number of
+//  the lines in the input file, multiply it by 2,
+//  and choose the next prime number.
+//  Data in: int number of input file lines
+//  Data out: int number of hash size
+// ********************************************
+int determineHashSize(int inFileCount) {
+    inFileCount = inFileCount*2;
+    int hashSize;
+    
+    int addToPrime = 1;
+    
+    while (!isPrime(inFileCount + addToPrime)) {
+        addToPrime++;
+    }
+    
+    hashSize = inFileCount + addToPrime;
+    return hashSize;
+}
+
+// ********************************************
+//  isPrime Function
+//  Check if the received number is prime number or not.
+//  Data in: int number
+//  Data out: bool true or false
+// ********************************************
+bool isPrime(int checkPrime) {
+    for (int index = 3; index < checkPrime; index += 2) {
+        if ((checkPrime % index) == 0) {
+            return false;
+        }
+    }
+    return true;
 }
 //**********************************************
 // Definition of isNumeric function

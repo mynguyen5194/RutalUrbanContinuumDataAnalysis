@@ -12,14 +12,13 @@
 
 
 template<class ItemType>
-class BinarySearchTree : public BinaryTree<ItemType>
-{   
+class BinarySearchTree : public BinaryTree<ItemType> {
 private:
 	// internal insert node: insert newNode in nodePtr subtree
 	BinaryNode<ItemType>* _insert(BinaryNode<ItemType>* nodePtr, BinaryNode<ItemType>* newNode);
    
 	// internal remove node: locate and delete target node under nodePtr subtree
-	BinaryNode<ItemType>* _remove(BinaryNode<ItemType>* nodePtr, const int target, bool & success);
+	BinaryNode<ItemType>* _remove(BinaryNode<ItemType>* nodePtr, const int target, bool & success, stack<ItemType*> & Stack);
    
 	// delete target node from tree, called by internal remove node
 	BinaryNode<ItemType>* deleteNode(BinaryNode<ItemType>* targetNodePtr);
@@ -31,19 +30,17 @@ private:
 	BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const int & target) const;
    
 
-public:  
-	
+public:
 	// insert a node at the correct location
     bool insert(const ItemType & newEntry);
 	// remove a node if found
-	bool remove(const int & anEntry);
+	bool remove(const int & anEntry, stack<ItemType*> & Stack);
 	// find a target node
 	bool getEntry(const int & target, ItemType & returnedItem) const;
 	// Print sub tree
 	bool getGreater(const int & target,void visit(ItemType &)) const;
 	void _subGreater(const int & target, void visit(ItemType &), BinaryNode<ItemType> *nodePtr) const;
-	
- 
+
 };
 
 
@@ -59,10 +56,10 @@ bool BinarySearchTree<ItemType>::insert(const ItemType & newEntry)
 }  
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::remove(const int & target)
+bool BinarySearchTree<ItemType>::remove(const int & target, stack<ItemType*> & Stack)
 {
 	bool isSuccessful = false;
-	this->rootPtr = _remove(this->rootPtr, target, isSuccessful);
+	this->rootPtr = _remove(this->rootPtr, target, isSuccessful, Stack);
 	return isSuccessful; 
 }  
 
@@ -140,7 +137,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* nodePtr,
                                                           const int target,
-                                                          bool & success)
+                                                          bool & success, stack<ItemType*> & Stack)
 
 {
 	if (nodePtr == 0)                   
@@ -149,11 +146,13 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* 
 		return 0;
 	}
 	if (nodePtr->getItem().getKey() > target)		 
-		nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success));
+		nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success, Stack));
 	else if (nodePtr->getItem().getKey() < target)	 
-		nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success));
+		nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success, Stack));
 	else		
 	{
+        ItemType * delPtr = new ItemType(nodePtr->getItem());
+        Stack.push(delPtr);
 		nodePtr = deleteNode(nodePtr);
 		success = true;
 	}      
@@ -172,6 +171,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::deleteNode(BinaryNode<ItemType
 	else if (nodePtr->getLeftPtr() == 0)  
 	{
 		BinaryNode<ItemType>* nodeToConnectPtr = nodePtr->getRightPtr();
+        
 		delete nodePtr;
 		nodePtr = 0;
 		return nodeToConnectPtr;
@@ -179,7 +179,8 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::deleteNode(BinaryNode<ItemType
 	else if (nodePtr->getRightPtr() == 0) 
 	{
 		BinaryNode<ItemType>* nodeToConnectPtr = nodePtr->getLeftPtr();
-		delete nodePtr;
+        
+        delete nodePtr;
 		nodePtr = 0;
 		return nodeToConnectPtr;      
 	}

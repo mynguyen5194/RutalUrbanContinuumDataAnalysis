@@ -40,7 +40,7 @@ int determineHashSize(int inFileCount) {
 bool isPrime(int checkPrime) {
     int index = 1;
     for (int index = 3; index < checkPrime; index += 2) {
-        if ((checkPrime % index) == 0 && index != 1) {
+        if ((checkPrime % index) == 0) {
             return false;
         }
     }

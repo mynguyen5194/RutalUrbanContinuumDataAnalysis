@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Team #2. All rights reserved.
 //
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
 #ifndef lab5_HashTable_h
 #define lab5_HashTable_h
 
-#define TABLE_SIZE 15
+//#define TABLE_SIZE 15
 
 template <class ItemType>
 class HashTable {
@@ -20,16 +21,18 @@ private:
     ItemType * table;
     int loadNumber;
     int numberOfCollision;
+    int TABLE_SIZE;
     
 public:
-    HashTable();
+   
+    HashTable(const int hashSize);
     ~HashTable();
     
     bool isEmpty();
     int hash(const ItemType & newEntry);
     bool insert(const ItemType & newEntry);
     bool search(const ItemType & target, ItemType & returnTarget);
-    bool deleteNode(const ItemType & target);
+    bool remove(const ItemType * target, stack<ItemType*> & Stack);
     void printItem(ItemType * nodePtr, bool displayList, void visit(ItemType &));
     void displayList(void visit(ItemType &));
     void printHashTable(void visit(ItemType &));
@@ -38,11 +41,9 @@ public:
 
 };
 
-// **************************************
-//  Constructor
-// **************************************
 template <class ItemType>
-HashTable<ItemType>::HashTable() {
+HashTable<ItemType>::HashTable(const int hashSize) {
+    TABLE_SIZE = hashSize;
     table = new ItemType[TABLE_SIZE];
     loadNumber = 0;
     numberOfCollision = 0;
@@ -95,7 +96,10 @@ bool HashTable<ItemType>::isEmpty() {
 // *************************************************
 template <class ItemType>
 int HashTable<ItemType>::hash(const ItemType & newEntry) {
-    return ((newEntry.getKey()) % TABLE_SIZE);
+    
+    int index = (newEntry.getKey() * 13);
+    
+    return (index % TABLE_SIZE);
 }
 
 // ******************************************************
@@ -162,14 +166,52 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
 }
 
 // **************************************************
-//  deleteNode function
+//  remove function
 // **************************************************
 template <class ItemType>
-bool HashTable<ItemType>::deleteNode(const ItemType &target) {
+bool HashTable<ItemType>::remove(const ItemType * target, stack<ItemType*> &Stack) {
     bool deleted = false;
+    ItemType * delPtr;
     
-//    int index = hash(target);
+    int index = hash(*target);
     
+    if (table[index].getKey() != 0) {
+        ItemType * tempPtr = NULL;
+        ItemType * nodePtr = &table[index];
+        while (nodePtr->getNext() != NULL && nodePtr->getKey() != target->getKey()) {
+            tempPtr = nodePtr;
+            nodePtr = nodePtr->getNext();
+        }
+        
+        if (nodePtr->getKey() == target->getKey()) {
+            // If the target is found in the hash table
+            if (tempPtr == NULL) {
+                delPtr = new ItemType(table[index]);
+                if (nodePtr->getNext() == NULL) {
+                    Stack.push(delPtr);
+                    table[index].setInfo(0, "", "", 0, 0);  // Overwrite the data to delete the element in the hash table
+                    deleted = true;
+                }
+                else {
+                    Stack.push(delPtr);
+                    table[index].setInfo(nodePtr->getNext()->getKey(), nodePtr->getNext()->getState(), nodePtr->getNext()->getCounty(),
+                                         nodePtr->getNext()->getPopulation(), nodePtr->getNext()->getRucc());
+                    deleted = true;
+                }
+            }
+            // If the target is found in the linked lists
+            else {
+                Stack.push(nodePtr);
+                delete nodePtr;
+                deleted = true;
+                tempPtr->setNext(nodePtr->getNext());
+            }
+        }
+    }
+    else {
+        cout << "The county is not in the list!\n";
+        return deleted;
+    }
     
     return deleted;
 }
@@ -186,7 +228,7 @@ void HashTable<ItemType>::printItem(ItemType * nodePtr, bool displayList , void 
     item.setInfo(nodePtr->getKey(), nodePtr->getState(), nodePtr->getCounty(),
                  nodePtr->getPopulation(), nodePtr->getRucc());
     if (!displayList) {
-        cout << "\t\t ";
+        cout << "\t\t\t  ";
     }
     visit(item);
 

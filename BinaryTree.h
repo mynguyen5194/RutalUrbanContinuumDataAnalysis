@@ -44,7 +44,7 @@ public:
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType & newData) = 0; 
-	virtual bool remove(const int & data) = 0; 
+	virtual bool remove(const int & data, stack<ItemType*> & Stack) = 0;
 	virtual bool getEntry(const int & anEntry, ItemType & returnedItem) const = 0;
 
 private:   
