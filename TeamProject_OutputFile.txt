@@ -1,0 +1,120 @@
+2050	AK	Andrew County	17013	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+
+1113	AL	Allendale County	52947	2
+	Metro - Counties in metro areas of 250,000 to 1 million population
+
+1111	AL	Allen Parish	22913	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+1107	AL	Allen County	19746	3
+	Metro - Counties in metro areas of fewer than 250,000 population
+
+1109	AL	Allen County	32899	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+1125	AL	Amite County	194656	3
+	Metro - Counties in metro areas of fewer than 250,000 population
+
+1119	AL	Amador County	13763	8
+	Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area
+
+1117	AL	Alpine County	195085	1
+	Metro - Counties in metro areas of 1 million population or more
+
+1115	AL	Alpena County	83593	1
+	Metro - Counties in metro areas of 1 million population or more
+
+1121	AL	Amelia County	82291	4
+	Nonmetro - Urban population of 20,000 or more, adjacent to a metro area
+
+1123	AL	Amherst County	41616	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+2020	AK	Anderson County	291826	2
+	Metro - Counties in metro areas of 250,000 to 1 million population
+
+2013	AK	Anderson County	3141	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+1131	AL	Anderson County	11670	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+1127	AL	Anasco Municipio	67023	1
+	Metro - Counties in metro areas of 1 million population or more
+
+1129	AL	Anchorage Municipality	17581	8
+	Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area
+
+1133	AL	Anderson County	24484	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+2016	AK	Anderson County	5561	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+5071	AR	Barren County	25540	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+
+2060	AK	Andrews County	997	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+2068	AK	Androscoggin County	1826	8
+	Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area
+
+5069	AR	Barranquitas Municipio	77435	3
+	Metro - Counties in metro areas of fewer than 250,000 population
+
+2110	AK	Antelope County	31275	5
+	Nonmetro - Urban population of 20,000 or more, not adjacent to a metro area
+
+2090	AK	Anne Arundel County	97581	3
+	Metro - Counties in metro areas of fewer than 250,000 population
+
+2070	AK	Angelina County	4847	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+2100	AK	Anoka County	2508	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+2105	AK	Anson County	2150	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+5053	AR	Baraga County	17853	2
+	Metro - Counties in metro areas of 250,000 to 1 million population
+
+2122	AK	Antrim County	55400	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+
+2130	AK	Apache County	13477	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+
+5057	AR	Barbour County	22609	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+5055	AR	Barber County	42090	4
+	Nonmetro - Urban population of 20,000 or more, adjacent to a metro area
+
+5061	AR	Barceloneta Municipio	13789	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+5059	AR	Barbour County	32923	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+5063	AR	Barnes County	36647	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+
+5065	AR	Barnstable County	13696	9
+	Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area
+
+5067	AR	Barnwell County	17997	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+5073	AR	Barron County	7645	8
+	Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area
+
+5075	AR	Barrow County	17415	6
+	Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area
+
+5077	AR	Barry County	10424	7
+	Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area
+

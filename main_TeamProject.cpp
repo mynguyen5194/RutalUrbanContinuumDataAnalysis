@@ -46,6 +46,9 @@ int main() {
     readFile(countyHash, countyTree);
     menu(countyHash, countyTree, Stack);
     
+    delete countyHash;
+    delete countyTree;
+    
     return 0;
 }
 
@@ -157,7 +160,7 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
 
                 case 'I':
                     // Print indented tree
-                    countyTree->Print_Indented_Tree();
+                    countyTree->Print_Indented_Tree(display);
                     break;
                     
                 case 'O':
@@ -337,7 +340,7 @@ void writeToFile(BinarySearchTree<County> * countyTree, stack<County*> & Stack)
     ofstream outFile;
     outFile.open("/Users/mynguyen5194/Desktop/TeamProject/TeamProject/TeamProject/TeamProject_OutputFile.txt");
     
-//    countyTree->preOrder_outFile(outFileDisplay, outFile);
+    countyTree->preOrder_outFile(outFileDisplay, outFile);
     
     outFile.close();
     

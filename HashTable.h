@@ -52,7 +52,7 @@ HashTable<ItemType>::HashTable(const int hashSize) {
 //  Destructor
 // **************************************
 template <class ItemType>
-HashTable<ItemType>::~HashTable<ItemType>() {
+HashTable<ItemType>::~HashTable() {
     ItemType * currentPtr;
     ItemType * nextPtr;
     

@@ -7,52 +7,49 @@
 using namespace std;
 
 template <class T>
-class Stack
-{
+class Stack {
 private:
-   // Structure for the stach nodes
-   struct StackNode
-   {
-      T value;          // Value in the node
-      StackNode *next;  // Pointer to next node
-   };
+    // Structure for the stach nodes
+    struct StackNode {
+        T value;          // Value in the node
+        StackNode *next;  // Pointer to next node
+    };
 
-   StackNode *top;     // Pointer to the stack top
-   int count;
+    StackNode *top;     // Pointer to the stack top
+    int count;
 
 public:
-   //Constructor
-   Stack(){top = NULL; count = 0;}
+    //Constructor
+    Stack(){top = NULL; count = 0;}
 
-   // Destructor
-   ~Stack();
+    // Destructor
+    ~Stack();
 
-   // Stack operations
-   bool push(T);
-   bool pop(T &);
-   bool isEmpty();
+    // Stack operations
+    bool push(T);
+    bool pop(T &);
+    bool isEmpty();
     int getCount() {return count;}  // getCount function
-    T getTop();
+    bool getTop(T & item);
 };
 
 /**~*~*
    Destructor
 *~**/
 template <class T>
-Stack<T>::~Stack()
-{
-   StackNode *currNode, *nextNode;
+Stack<T>::~Stack() {
+    StackNode *currNode, *nextNode;
 
-   // Position nodePtr at the top of the stack.
-   currNode = top;
+    // Position nodePtr at the top of the stack.
+    currNode = top;
 
-   // Traverse the list deleting each node.
-   while (currNode) //while (currNode != NULL)
-   {
-      nextNode = currNode->next;
-      delete currNode;
-      currNode = nextNode;
-   }
+    // Traverse the list deleting each node.
+    while (currNode) //while (currNode != NULL)
+    {
+        nextNode = currNode->next;
+        delete currNode;
+        currNode = nextNode;
+    }
 }
 
 /**~*~*
@@ -60,22 +57,21 @@ Stack<T>::~Stack()
   the stack.
 *~**/
 template <class T>
-bool Stack<T>::push(T item)
-{
-   StackNode *newNode; // Pointer to a new node
+bool Stack<T>::push(T item) {
+    StackNode *newNode; // Pointer to a new node
 
-   // Allocate a new node and store num there.
-   newNode = new StackNode;
-   if (!newNode)
-       return false;
-   newNode->value = item;
+    // Allocate a new node and store num there.
+    newNode = new StackNode;
+    if (!newNode)
+        return false;
+    newNode->value = item;
 
-   // Update links and counter
-   newNode->next = top;
-   top = newNode;
-   count++;
+    // Update links and counter
+    newNode->next = top;
+    top = newNode;
+    count++;
 
-   return true;
+    return true;
 }
 
 /**~*~*
@@ -84,22 +80,21 @@ bool Stack<T>::push(T item)
   passed as an argument.
 *~**/
 template <class T>
-bool Stack<T>::pop(T &item)
-{
-   StackNode *temp; // Temporary pointer
+bool Stack<T>::pop(T &item) {
+    StackNode *temp; // Temporary pointer
 
-   // empty stack
-   if (count == 0)
-       return false;
+    // empty stack
+    if (count == 0)
+        return false;
 
-   // pop value off top of stack
-   item = top->value;
-   temp = top->next;
-   delete top;
-   top = temp;
-   count--;
+    // pop value off top of stack
+    item = top->value;
+    temp = top->next;
+    delete top;
+    top = temp;
+    count--;
 
-   return true;
+    return true;
 }
 
 /**~*~*
@@ -118,9 +113,13 @@ bool Stack<T>::isEmpty()
  and returns false.
  *~**/
 template <class T>
-T Stack<T>::getTop() {
-    T topVal;
-    topVal = top->value;
-    return topVal;
+bool Stack<T>::getTop(T & item) {
+    if (top == NULL)
+        return false;
+    
+    item = top->value;
+    
+    return true;
+    
 }
 #endif

@@ -29,14 +29,12 @@ public:
 	void inOrder(void visit(ItemType &)) const  {_inorder(visit, rootPtr);}
 	void postOrder(void visit(ItemType &)) const{_postorder(visit, rootPtr);}
 	void inOrderRight(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const {_inorder(visit, nodePtr);}
-	void InOrder_Interative(void visit(ItemType &)) const;
-	void PostOrder_Interative(void visit(ItemType &)) const;
-	void PreOrder_Interative(void visit(ItemType &)) const;
-	int getcount() { return count; }
+    int getcount() { return count; }
 	int getKey_root() const {return rootPtr->getItem().getKey();}
 	bool Breadth_First_Traversal(void visit(ItemType &));
-	bool Print_Indented_Tree();
-	
+	bool Print_Indented_Tree(void visit(ItemType &));
+    void preOrder_outFile(void visit_outFile(ItemType &, ofstream & outFile), ofstream & outFile)
+        const {_preorderOutFile(visit_outFile, rootPtr, outFile);}
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType & newData) = 0; 
@@ -48,7 +46,7 @@ private:
 	void destroyTree(BinaryNode<ItemType>* nodePtr);
 
 	//Print indented tree
-	void _print_indented(BinaryNode<ItemType>* nodePtr, int level, int space);
+	void _print_indented(BinaryNode<ItemType>* nodePtr, int level, int space, void visit(ItemType &));
 
 	// copy from the tree rooted at nodePtr and returns a pointer to the copy
 	BinaryNode<ItemType>* copyTree(const BinaryNode<ItemType>* nodePtr, int &acount);
@@ -57,93 +55,34 @@ private:
 	void _preorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
+    void _preorderOutFile(void visit_outFile(ItemType &, ofstream & outFile), BinaryNode<ItemType>* nodePtr, ofstream & outFile) const;
    
 }; 
 
 //////////////////////////////////////////////////////////////////////////
-
 template<class ItemType>
-void BinaryTree<ItemType>::PostOrder_Interative(void visit(ItemType &)) const
-{
-
-
-}
-
-template<class ItemType>
-void BinaryTree<ItemType>:: InOrder_Interative(void visit(ItemType &)) const
-{
-	if(!rootPtr)
-		return;
-	stack <BinaryNode<ItemType>*> astack;
-	BinaryNode<ItemType> *nodePtr = rootPtr;
-	
-	bool done = false;
-	while (!done)
-	{
-		if(nodePtr)
-		{
-			astack.push(nodePtr);
-			nodePtr = nodePtr->getLeftPtr();
-		}
-		else
-		{	if(!astack.empty())
-			{
-				nodePtr = astack.top();
-				visit(nodePtr->getItem());
-				astack.pop();
-				nodePtr = nodePtr->getRightPtr();
-			}//if
-			else done = true;	
-		}//else
-	}//while
-}
-
-
-template<class ItemType>
-void BinaryTree<ItemType>:: PreOrder_Interative(void visit(ItemType &)) const
-{
-	if(!rootPtr)
-		return;
-	stack <BinaryNode<ItemType>*> astack;
-	BinaryNode<ItemType> *nodePtr;
-	astack.push(rootPtr);
-	while(!astack.empty())
-	{
-		nodePtr = astack.top();
-		visit(nodePtr->getItem());
-		astack.pop();
-		if(nodePtr->getRightPtr())
-			astack.push(nodePtr->getRightPtr());
-		if(nodePtr->getLeftPtr())
-			astack.push(nodePtr->getLeftPtr());
-	}
-	return;
-
-}
-
-template<class ItemType>
-bool BinaryTree<ItemType>::Print_Indented_Tree()
+bool BinaryTree<ItemType>::Print_Indented_Tree(void visit(ItemType &))
 {
 	if(!rootPtr)
 		return false;
 	int level = 1, space = 0;
-	_print_indented(rootPtr, level, space);
+	_print_indented(rootPtr, level, space, visit);
 	return true;
 }
 
 template<class ItemType>
-void BinaryTree<ItemType>::_print_indented(BinaryNode<ItemType>* nodePtr, int level, int space)
+void BinaryTree<ItemType>::_print_indented(BinaryNode<ItemType>* nodePtr, int level, int space, void visit(ItemType &))
 {
 	if(!nodePtr)
 	{
 		cout << setw(space) <<level <<".\n";
 		return;
 	}
-	cout << setw(space) <<level <<"." << nodePtr->getItem().getKey() << "\t" << nodePtr->getItem().getState() << "\t" << nodePtr->getItem().getCounty()
-		 << "\t" << nodePtr->getItem().getPopulation() << "\t" << nodePtr->getItem().getRucc() << endl;
-	
-		_print_indented(nodePtr->getLeftPtr(), ++level, space=space+5);
-		_print_indented(nodePtr->getRightPtr(),level, space);
+    ItemType item = nodePtr->getItem();
+    cout << setw(space) << level <<".";
+    visit(item);
+		_print_indented(nodePtr->getLeftPtr(), ++level, space=space+5, visit);
+		_print_indented(nodePtr->getRightPtr(),level, space, visit);
 }
 
 template<class ItemType>
@@ -210,6 +149,18 @@ void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType
 }  
 
 template<class ItemType>
+void BinaryTree<ItemType>::_preorderOutFile(void visit_outFile(ItemType &, ofstream & outFile), BinaryNode<ItemType>* nodePtr, ofstream & outFile) const
+{
+    if (nodePtr != 0)
+    {
+        ItemType item = nodePtr->getItem();
+        visit_outFile(item, outFile);
+        _preorderOutFile(visit_outFile, nodePtr->getLeftPtr(), outFile);
+        _preorderOutFile(visit_outFile, nodePtr->getRightPtr(), outFile);
+    } 
+}
+
+template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
 	if (nodePtr !=0)
@@ -239,7 +190,8 @@ BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType
 	count = 0;
 	rootPtr = copyTree(sourceTree.rootPtr, count);
 	return *this;
-}  
+}
+
 
 #endif
 
