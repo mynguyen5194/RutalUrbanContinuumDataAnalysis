@@ -1,9 +1,6 @@
 // main test driver for BST
 // Created by Frank M. Carrano and Tim Henry.
-// modified by Nghia Nguyen
-// Email : fatboy_dn_2193@yahoo.com
-// IDE: Visual Studio
-// Extension until Sunday
+
 #ifndef _BINARY_NODE
 #define _BINARY_NODE
 #include "County.h"

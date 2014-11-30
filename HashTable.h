@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Team #2. All rights reserved.
 //
 #include <iostream>
-#include <stack>
 
 using namespace std;
 
@@ -32,7 +31,7 @@ public:
     int hash(const ItemType & newEntry);
     bool insert(const ItemType & newEntry);
     bool search(const ItemType & target, ItemType & returnTarget);
-    bool remove(const ItemType target, stack<ItemType*> & Stack);
+    bool remove(const ItemType target);
     void printItem(ItemType * nodePtr, bool displayList, void visit(ItemType &));
     void displayList(void visit(ItemType &));
     void printHashTable(void visit(ItemType &));
@@ -169,7 +168,7 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
 //  remove function
 // **************************************************
 template <class ItemType>
-bool HashTable<ItemType>::remove(const ItemType target, stack<ItemType*> &Stack) {
+bool HashTable<ItemType>::remove(const ItemType target) {
     bool deleted = false;
     ItemType * delPtr;
     
@@ -188,12 +187,10 @@ bool HashTable<ItemType>::remove(const ItemType target, stack<ItemType*> &Stack)
             if (tempPtr == NULL) {
                 delPtr = new ItemType(table[index]);
                 if (nodePtr->getNext() == NULL) {
-                    Stack.push(delPtr);
                     table[index].setInfo(0, "", "", 0, 0);  // Overwrite the data to delete the element in the hash table
                     deleted = true;
                 }
                 else {
-                    Stack.push(delPtr);
                     table[index].setInfo(nodePtr->getNext()->getKey(), nodePtr->getNext()->getState(), nodePtr->getNext()->getCounty(),
                                          nodePtr->getNext()->getPopulation(), nodePtr->getNext()->getRucc());
                     deleted = true;
@@ -201,16 +198,11 @@ bool HashTable<ItemType>::remove(const ItemType target, stack<ItemType*> &Stack)
             }
             // If the target is found in the linked lists
             else {
-                Stack.push(nodePtr);
                 delete nodePtr;
                 deleted = true;
                 tempPtr->setNext(nodePtr->getNext());
             }
         }
-    }
-    else {
-        cout << "The county is not in the list!\n";
-        return deleted;
     }
     
     return deleted;
