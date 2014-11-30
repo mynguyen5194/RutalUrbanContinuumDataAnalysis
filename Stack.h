@@ -6,12 +6,12 @@
 #include <iostream>
 using namespace std;
 
-template <class T>
+template <class ItemType>
 class Stack {
 private:
     // Structure for the stach nodes
     struct StackNode {
-        T value;          // Value in the node
+        ItemType value;          // Value in the node
         StackNode *next;  // Pointer to next node
     };
 
@@ -26,18 +26,18 @@ public:
     ~Stack();
 
     // Stack operations
-    bool push(T);
-    bool pop(T &);
+    bool push(ItemType);
+    bool pop(ItemType &);
     bool isEmpty();
     int getCount() {return count;}  // getCount function
-    bool getTop(T & item);
+    bool getTop(ItemType & item);
 };
 
 /**~*~*
    Destructor
 *~**/
-template <class T>
-Stack<T>::~Stack() {
+template <class ItemType>
+Stack<ItemType>::~Stack() {
     StackNode *currNode, *nextNode;
 
     // Position nodePtr at the top of the stack.
@@ -56,8 +56,8 @@ Stack<T>::~Stack() {
   Member function push pushes the argument onto
   the stack.
 *~**/
-template <class T>
-bool Stack<T>::push(T item) {
+template <class ItemType>
+bool Stack<ItemType>::push(ItemType item) {
     StackNode *newNode; // Pointer to a new node
 
     // Allocate a new node and store num there.
@@ -79,8 +79,8 @@ bool Stack<T>::push(T item) {
   of the stack off, and copies it into the variable
   passed as an argument.
 *~**/
-template <class T>
-bool Stack<T>::pop(T &item) {
+template <class ItemType>
+bool Stack<ItemType>::pop(ItemType &item) {
     StackNode *temp; // Temporary pointer
 
     // empty stack
@@ -101,8 +101,8 @@ bool Stack<T>::pop(T &item) {
   Member function isEmpty returns true if the stack
   is empty, or false otherwise.
 *~**/
-template <class T>
-bool Stack<T>::isEmpty()
+template <class ItemType>
+bool Stack<ItemType>::isEmpty()
 {
    return count == 0;
 }
@@ -112,8 +112,8 @@ bool Stack<T>::isEmpty()
  and returns true or displays None if the stack is empty
  and returns false.
  *~**/
-template <class T>
-bool Stack<T>::getTop(T & item) {
+template <class ItemType>
+bool Stack<ItemType>::getTop(ItemType & item) {
     if (top == NULL)
         return false;
     

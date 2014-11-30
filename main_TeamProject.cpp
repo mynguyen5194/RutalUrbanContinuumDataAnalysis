@@ -10,7 +10,6 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-//#include <stack>
 #include "County.h"
 #include "HashTable.h"
 #include "BinarySearchTree.h"
@@ -23,13 +22,13 @@ using namespace std;
 void display(County & county);
 bool readFile (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
 void outFileDisplay(County & county, ofstream & outFile);
-void menu (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack);
+void menu (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
 void insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
 bool searchCounty (HashTable<County> * countyHash);
-bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack);
-void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack);
+bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
+void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
 void Depth_First_Traversals(BinarySearchTree<County>* tree);
-void writeToFile(BinarySearchTree<County> * countyTree, stack<County*> & Stack);
+void writeToFile(BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
 void eliminateComma(string & line);
 int determineHashSize(int inFileCount);
 bool isPrime(int checkPrime);
@@ -39,7 +38,7 @@ void showMenu();
 int main() {
     const int hashTableSize = determineHashSize(LIST_SIZE);
     
-    stack<County*> Stack;
+    Stack<County*> Stack;
     HashTable<County> * countyHash = new HashTable<County>(hashTableSize);
     BinarySearchTree<County> * countyTree = new BinarySearchTree<County>();
     
@@ -107,7 +106,7 @@ bool readFile(HashTable<County> * countyHash, BinarySearchTree<County> * countyT
 // ********************************************
 //  menu function
 // ********************************************
-void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack) {
+void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
     string option;
     
     do {
@@ -166,6 +165,7 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
                 case 'O':
                     // In Order
                     countyTree->inOrder(display);
+                    break;
 
                 case 'Z':
                     // Undo delete
@@ -174,7 +174,7 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
                     
                 case 'W':
                     // Write data to a file
-                    cout << "saving data to 'RU_updated.txt' and dumping stack\n";
+                    cout << "saving data to 'RU_updated.txt'\n";
                     writeToFile(countyTree, Stack);
                     break;
         
@@ -269,7 +269,7 @@ bool searchCounty (HashTable<County> * countyHash) {
 // ********************************************
 //  deleteCounty function
 // ********************************************
-bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack) {
+bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
     string key;
     bool deleted = false;
     
@@ -295,18 +295,21 @@ bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * cou
 // ********************************************
 //  undoDelete function
 // ********************************************
-void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, stack<County*> & Stack) {
+void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
     County * county;
     
     cout << " ~*~ Undo Delete County Information ~*~\n";
-    if (!Stack.empty()) {
-        county = Stack.top();
-        cout << "Reinsert ";
-        display(*county);
+    if (!Stack.isEmpty()) {
+        if (Stack.getTop(county)) {
+            cout << "Reinsert ";
+            display(*county);
+        }
         
-        Stack.pop();
-        countyHash->insert(*county);
-        countyTree->insert(*county);
+        if (Stack.pop(county)) {
+            countyHash->insert(*county);
+            countyTree->insert(*county);
+        }
+        
     }
     else
         cout << "Stack is empty!\n";
@@ -319,8 +322,7 @@ void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * count
 // ********************************************
 void Depth_First_Traversals(BinarySearchTree<County>* countyTree)
 {
-    if(!countyTree->getKey_root())
-    {
+    if(!countyTree->getKey_root()) {
         cout << "There is no data.\n";
         return;
     }
@@ -335,8 +337,8 @@ void Depth_First_Traversals(BinarySearchTree<County>* countyTree)
 // ********************************************
 //  writeToFile function
 // ********************************************
-void writeToFile(BinarySearchTree<County> * countyTree, stack<County*> & Stack)
-{
+void writeToFile(BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
+    County * county;
     ofstream outFile;
     outFile.open("/Users/mynguyen5194/Desktop/TeamProject/TeamProject/TeamProject/TeamProject_OutputFile.txt");
     
@@ -344,8 +346,8 @@ void writeToFile(BinarySearchTree<County> * countyTree, stack<County*> & Stack)
     
     outFile.close();
     
-    while(!Stack.empty())
-        Stack.pop();
+    while(!Stack.isEmpty())
+        Stack.pop(county);
     
 }
 

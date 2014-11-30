@@ -6,8 +6,8 @@
 
 #include <iomanip>
 #include "BinaryNode.h"
-#include <queue>
-#include <stack>
+#include "Stack.h"
+#include "Queue.h"
 template<class ItemType>
 class BinaryTree
 {
@@ -38,7 +38,7 @@ public:
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType & newData) = 0; 
-	virtual bool remove(const ItemType & data, stack<ItemType*> & Stack) = 0;
+	virtual bool remove(const ItemType & data, Stack<ItemType*> & Stack) = 0;
 	virtual bool getEntry(const ItemType & anEntry, ItemType & returnedItem) const = 0;
 
 private:   
@@ -91,20 +91,21 @@ bool BinaryTree<ItemType>::Breadth_First_Traversal(void visit(ItemType &))
 	if(!rootPtr)
 		return false;
 	
-	queue<BinaryNode<ItemType>*> aqueue;
-	aqueue.push(rootPtr);
-	while(!aqueue.empty())
+	Queue<BinaryNode<ItemType>*> aqueue;
+	aqueue.enqueue(rootPtr);
+	while(!aqueue.isEmpty())
 	{
-		BinaryNode<ItemType>*nodePtr = aqueue.front();
+        BinaryNode<ItemType>*nodePtr;
+        aqueue.queueFront(nodePtr);
         ItemType item = nodePtr->getItem();
         visit(item);
 		
 		if(nodePtr->getLeftPtr())
-			aqueue.push(nodePtr->getLeftPtr());
+			aqueue.enqueue(nodePtr->getLeftPtr());
 
 		if(nodePtr->getRightPtr())
-			aqueue.push(nodePtr->getRightPtr());
-		aqueue.pop();
+			aqueue.enqueue(nodePtr->getRightPtr());
+		aqueue.dequeue(nodePtr);
 	}
 	return true;
 }
