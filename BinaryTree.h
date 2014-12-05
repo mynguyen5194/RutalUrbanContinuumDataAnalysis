@@ -29,7 +29,6 @@ public:
 	void inOrder(void visit(ItemType &)) const  {_inorder(visit, rootPtr);}
 	void postOrder(void visit(ItemType &)) const{_postorder(visit, rootPtr);}
 	void inOrderRight(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const {_inorder(visit, nodePtr);}
-    int getcount() { return count; }
 	int getKey_root() const {return rootPtr->getItem().getKey();}
 	bool Breadth_First_Traversal(void visit(ItemType &));
 	bool Print_Indented_Tree(void visit(ItemType &));
@@ -81,7 +80,7 @@ void BinaryTree<ItemType>::_print_indented(BinaryNode<ItemType>* nodePtr, int le
     ItemType item = nodePtr->getItem();
     cout << setw(space) << level <<".";
     visit(item);
-		_print_indented(nodePtr->getLeftPtr(), ++level, space=space+5, visit);
+		_print_indented(nodePtr->getLeftPtr(), ++level, space=space+3, visit);
 		_print_indented(nodePtr->getRightPtr(),level, space, visit);
 }
 

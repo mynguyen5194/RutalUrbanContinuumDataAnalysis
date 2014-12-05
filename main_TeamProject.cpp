@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <algorithm>
 #include "County.h"
 #include "HashTable.h"
 #include "BinarySearchTree.h"
@@ -23,7 +24,7 @@ void display(County & county);
 bool readFile (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
 void outFileDisplay(County & county, ofstream & outFile);
 void menu (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
-void insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
+bool insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree);
 bool searchCounty (HashTable<County> * countyHash);
 bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
 void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack);
@@ -33,6 +34,8 @@ void eliminateComma(string & line);
 int determineHashSize(int inFileCount);
 bool isPrime(int checkPrime);
 bool isNumeric(string numStr);
+void Metro_description(string arrayDescriptions[9]);
+void briefDisplay(County & county);
 void showMenu();
 
 int main() {
@@ -117,73 +120,78 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
         
             switch (toupper(option[0])) {
                 case 'A':
-                    // Add new data
-                    insert(countyHash, countyTree);
-                    break;
-                    
-                case 'S':
-                    searchCounty(countyHash);
+                    cout << " ~*~ Insert Data ~*~\n";
+                    if(!insert(countyHash, countyTree))
+                        cout << "The key is already exist or invalid data.\n\n";
                     break;
                     
                 case 'D':
-                    // Delete data (both BST & hash table)
-                    deleteCounty(countyHash, countyTree, Stack);
+                    cout << " ~*~ Delete County Information ~*~\n";
+                    if (!deleteCounty(countyHash, countyTree, Stack))
+                        cout << "County is not in the list\n";
+                    else
+                        cout << "Deleted\n";
+                    break;
+                    
+                case 'S':
+                    cout << " ~*~ Search County Information ~*~\n";
+                    searchCounty(countyHash);
+                    break;
+                    
+                case 'K':
+                    cout << " ~*~ List data in hash table sequence ~*~ \n";
+                    countyTree->inOrder(display);
                     break;
                     
                 case 'L':
                     cout << " ~*~ List data in hash table sequence ~*~ \n";
                     countyHash->displayList(display);
                     break;
-                
+                    
                 case 'P':
-                    cout << " ~*~ Print Indented Hash Table ~*~ \n";
+                    cout << " ~*~ Print Hash Table ~*~ \n";
                     countyHash->printHashTable(display);
                     break;
                     
                 case 'T':
-                    // Hash statistics (info)
                     cout << " ~*~ Hash Table Statistics ~*~\n";
                     countyHash->statistics();
                     break;
                     
                 case 'B':
-                    //Tree Breadth-First Traversal: Print by level
+                    cout << " ~*~ Tree Breadth-First Traversal ~*~\n";
                     if(!countyTree->Breadth_First_Traversal(display))
                         cout << "There is no data.\n";
                     break;
-
+                    
                 case 'R':
-                    // Recursive Depth-First Traversals:inorder, preorder, postorder
+                    cout << " ~*~ Recursive Depth-First Traversals ~*~\n";
                     Depth_First_Traversals(countyTree);
                     break;
-
+                    
                 case 'I':
-                    // Print indented tree
-                    countyTree->Print_Indented_Tree(display);
+                    cout << " ~*~ Print indented tree ~*~ \n";
+                    countyTree->Print_Indented_Tree(briefDisplay);
                     break;
                     
-                case 'O':
-                    // In Order
-                    countyTree->inOrder(display);
-                    break;
-
                 case 'Z':
-                    // Undo delete
+                    cout << " ~*~ Undo Delete County Information ~*~\n";
                     undoDelete(countyHash, countyTree, Stack);
                     break;
                     
                 case 'W':
-                    // Write data to a file
-                    cout << "saving data to 'RU_updated.txt'\n";
+                    cout << "~*~ Saving data to 'RU_updated.txt' ~*~ \n";
                     writeToFile(countyTree, Stack);
                     break;
-        
+
                 case 'M':
+                    cout << "\n ~*~ Menu ~*~ \n";
                     showMenu();
                     break;
-                
+                    
                 default:
                     break;
+
             }
         }
     } while (toupper(option[0]) != 'Q');
@@ -194,22 +202,26 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
     return;
 }
 
+
 // ********************************************
 //  insert function
 // ********************************************
-void insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree) {
-    string key, state, county, population, rucc;
+bool insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTree) {
+    string key = "", state = "", county = "", population = "", rucc = "";
     County countyInfo;
     
-    cout << " ~*~ Insert New Data ~*~\n";
     cout << "Please enter the key (FIPS): ";
     getline(cin, key);
     
     if (isNumeric(key)) {
-        countyInfo.setInfo(atoi(key.c_str()), "", "", 0, 0); //, state, county, atoi(population.c_str()), atoi(rucc.c_str()));
+        countyInfo.setInfo(atoi(key.c_str()), "", "", 0, 0);
         if (countyHash->search(countyInfo, countyInfo) == false) {
+            
+            cout << "Valid key!\n";
             cout << "Please enter the state abbreviation: ";
             getline(cin, state);
+            if (isNumeric(state) || state.length() != 2)
+                return false;
             
             cout << "Please enter the county name: ";
             getline(cin, county);
@@ -217,24 +229,25 @@ void insert (HashTable<County> * countyHash, BinarySearchTree<County> * countyTr
             cout << "Please enter the county's population: ";
             getline(cin, population);
             eliminateComma(population);
+            if(!isNumeric(population))
+                return false;
             
             cout << "Please enter the county's RUCC (from 1 to 9): ";
             getline(cin, rucc);
+            if(!isNumeric(rucc) || atoi(rucc.c_str()) < 0 || atoi(rucc.c_str()) > 9)
+                return false;
             
-            if (state.length() == 2 && isNumeric(population) &&
-                rucc.length() == 1 && atoi(rucc.c_str()) > 0 && atoi(rucc.c_str()) < 10) {
-                countyInfo.setInfo(atoi(key.c_str()), state, county, atoi(population.c_str()), atoi(rucc.c_str()));
-                countyHash->insert(countyInfo);
-                countyTree->insert(countyInfo);
-            }
+            countyInfo.setInfo(atoi(key.c_str()), state, county, atoi(population.c_str()), atoi(rucc.c_str()));
+            countyHash->insert(countyInfo);
+            countyTree->insert(countyInfo);
         }
+        
         else
-            cout << "The key is already exist!\n";
+            return false;
+        
+        return true;
     }
-    else
-        cout << "Invalid input!\n";
-    
-    return;
+    return false;
 }
 
 // ********************************************
@@ -245,7 +258,6 @@ bool searchCounty (HashTable<County> * countyHash) {
     string key;
     County countyInfo;
     
-    cout << " ~*~ Search County Information ~*~\n";
     cout << "Please enter the county's key (FIPS): ";
 
     getline(cin, key);
@@ -272,9 +284,8 @@ bool searchCounty (HashTable<County> * countyHash) {
 bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
     string key;
     bool deleted = false;
-    
     County countyInfo;
-    cout << " ~*~ Delete County Information ~*~\n";
+    
     cout << "Please enter the county's key (FIPS): ";
     getline(cin, key);
     if (isNumeric(key)) {
@@ -286,9 +297,6 @@ bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * cou
         }
     }
     
-    else
-        cout << "Invalid input!\n";
-    
     return deleted;
 }
 
@@ -298,18 +306,24 @@ bool deleteCounty(HashTable<County> * countyHash, BinarySearchTree<County> * cou
 void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree, Stack<County*> & Stack) {
     County * county;
     
-    cout << " ~*~ Undo Delete County Information ~*~\n";
     if (!Stack.isEmpty()) {
         if (Stack.getTop(county)) {
-            cout << "Reinsert ";
-            display(*county);
+            
+            // Print and reinsert if the top county in the stack doesn't exist
+            if(!countyHash->search(*county, *county)) {
+                cout << "Reinsert ";
+                display(*county);
+                
+                if (Stack.pop(county)) {
+                    countyHash->insert(*county);
+                    countyTree->insert(*county);
+                }
+            }
+            else {  // Pop and display error message if the county already exists
+                cout << "County already exists!\n";
+                Stack.pop(county);
+            }
         }
-        
-        if (Stack.pop(county)) {
-            countyHash->insert(*county);
-            countyTree->insert(*county);
-        }
-        
     }
     else
         cout << "Stack is empty!\n";
@@ -320,18 +334,20 @@ void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * count
 // ********************************************
 //  Depth_First_Traversals function
 // ********************************************
-void Depth_First_Traversals(BinarySearchTree<County>* countyTree)
+void Depth_First_Traversals(BinarySearchTree<County>* tree)
 {
-    if(!countyTree->getKey_root()) {
+    if(!tree->getKey_root())
+    {
         cout << "There is no data.\n";
         return;
     }
-    cout<<"\nIn order: \n";
-    countyTree->inOrder(display);
-    cout<<"\nPost order: \n";
-    countyTree->postOrder(display);
-    cout <<"\nPre order: \n";
-    countyTree->preOrder(display);
+    
+    cout <<"\t\t -----Pre order----- \n";
+    tree->preOrder(display);
+    cout<<"\t\t -----In order----- \n";
+    tree->inOrder(display);
+    cout<<"\t\t -----Post order----- \n";
+    tree->postOrder(display);
 }
 
 // ********************************************
@@ -406,67 +422,85 @@ bool isNumeric(string numStr) {
 }
 
 // ********************************************
-//  display function
+//  display function: display the county to
+//  with description
 // ********************************************
 void display(County & county) {
     
     //array of descriptions correlating to RUCC number
-    string arrayDescriptions[9] = {"Metro - Counties in metro areas of 1 million population or more",
-        "Metro - Counties in metro areas of 250,000 to 1 million population",
-        "Metro - Counties in metro areas of fewer than 250,000 population",
-        "Nonmetro - Urban population of 20,000 or more, adjacent to a metro area",
-        "Nonmetro - Urban population of 20,000 or more, not adjacent to a metro area",
-        "Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area",
-        "Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area",
-        "Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area",
-        "Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area"};
+    string arrayDescriptions[9];
+    Metro_description(arrayDescriptions);
     
     if (county.getKey() != 0 && county.getPopulation() != 0)
-        cout << county.getKey() << "\t" << county.getState() << "\t" << county.getCounty()
-        << "\t" << county.getPopulation() << "\t" << county.getRucc()
-        << endl << "\t" << arrayDescriptions[county.getRucc() - 1] << endl << endl;
+        cout << county.getKey() << "  " << county.getState() << "  " << county.getCounty()
+        << "  " << county.getPopulation() << endl << "\t" << arrayDescriptions[county.getRucc() - 1] << endl << endl;
+    return;
+}
+// ********************************************
+//  display function: display the county to screen
+// with no description
+// ******************************************
+void briefDisplay(County & county) {
+    
+    //array of descriptions correlating to RUCC number
+    string arrayDescriptions[9];
+    Metro_description(arrayDescriptions);
+    
+    if (county.getKey() != 0 && county.getPopulation() != 0)
+        cout << county.getKey() << "  " << county.getState() << "  " << county.getCounty()
+        << "  " << county.getPopulation() << "  " << county.getRucc() << endl;
     return;
 }
 
 // ********************************************
-//  outFileDisplay function
+//  outFileDisplay function: display the county
+//  to outFile
 // ********************************************
 void outFileDisplay(County & county, ofstream & outFile) {
-    
-    string arrayDescriptions[9] = {"Metro - Counties in metro areas of 1 million population or more",
-        "Metro - Counties in metro areas of 250,000 to 1 million population",
-        "Metro - Counties in metro areas of fewer than 250,000 population",
-        "Nonmetro - Urban population of 20,000 or more, adjacent to a metro area",
-        "Nonmetro - Urban population of 20,000 or more, not adjacent to a metro area",
-        "Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area",
-        "Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area",
-        "Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area",
-        "Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area"};
+    //array of descriptions correlating to RUCC number
+    string arrayDescriptions[9];
+    Metro_description(arrayDescriptions);
     
     if (county.getKey() != 0 && county.getPopulation() != 0)
         outFile << county.getKey() << "\t" << county.getState() << "\t" << county.getCounty()
-        << "\t" << county.getPopulation() << "\t" << county.getRucc()
-        << endl << "\t" << arrayDescriptions[county.getRucc() - 1] << endl << endl;
+        << "\t" << county.getPopulation() << "\t" << county.getRucc() << endl;
     return;
 }
+
+/***********************************************
+ 
+ ************************************************/
+void Metro_description(string arrayDescriptions[9])
+{
+    arrayDescriptions[0] = "Metro - Counties in metro areas of 1 million population or more";
+    arrayDescriptions[1] = "Metro - Counties in metro areas of 250,000 to 1 million population";
+    arrayDescriptions[2] = "Metro - Counties in metro areas of fewer than 250,000 population";
+    arrayDescriptions[3] = "Nonmetro - Urban population of 20,000 or more, adjacent to a metro area";
+    arrayDescriptions[4] = "Nonmetro - Urban population of 20,000 or more, not adjacent to a metro area";
+    arrayDescriptions[5] = "Nonmetro - Urban population of 2,500 to 19,999, adjacent to a metro area";
+    arrayDescriptions[6] = "Nonmetro - Urban population of 2,500 to 19,999, not adjacent to a metro area";
+    arrayDescriptions[7] = "Nonmetro - Completely rural or less than 2,500 urban population, adjacent to a metro area";
+    arrayDescriptions[8] = "Nonmetro - Completely rural or less than 2,500 urban population, not adjacent to a metro area";
+    return;
+}
+
 
 // ********************************************
 //  menu function
 // ********************************************
 void showMenu() {
-    cout << "\n ~*~ Menu ~*~ \n"
-        << "A - Add new data \n"
-        << "S - Search and display one element using the primary key \n"
-        << "D - Delete data \n"
-        << "L - List data in hash table sequence \n"
-        << "P - Print indented hash table \n"
-        << "T - Hast statistics (info) \n"
-        << "B - Print BST by level \n"
-        << "R - Recursive depth-first traversal \n"
-        << "I - Print indented tree \n"
-        << "O - List data in key sequence (sorted) \n"
-        << "Z - Undo delete \n"
-        << "W - Write data to a file \n"
-        << "M - showMenu \n";
+    cout << "A - Add new data \n"
+    << "D - Delete data \n"
+    << "B - Tree Breadth-First Traversal: Print by level \n"
+    << "S - Search and display one element using the primary key \n"
+    << "L - List data in hash table sequence \n"
+    << "K - List data in key sequence (sorted) \n"
+    << "I - Print indened Tree \n"
+    << "P - Print Hash Table \n"
+    << "R - Recursive Depth-First Traversals: preorder, inorder, postorder \n"
+    << "W - Write data to a file and commit deletes \n"
+    << "T - Hast statistics (info) \n"
+    << "Z - Undo Delete \n"
+    << "M - showMenu \n";
     return;
 }

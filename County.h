@@ -19,10 +19,10 @@ public:
     County() {key = 0; state = ""; county = ""; population = 0; rucc = 0; next = NULL;}
 
     int getKey() const {return key;}
-    int getPopulation() {return population;}
-    int getRucc() {return rucc;}
-    string getState() {return state;}
-    string getCounty() {return county;}
+    int getPopulation() const {return population;}
+    int getRucc() const {return rucc;}
+    string getState() const {return state;}
+    string getCounty() const {return county;}
     County * getNext() {return next;}
 
     void setNext(County * Next) {next = Next;}

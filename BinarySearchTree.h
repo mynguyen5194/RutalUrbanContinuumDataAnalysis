@@ -6,7 +6,6 @@
 
 #include "BinaryTree.h"
 
-
 template<class ItemType>
 class BinarySearchTree : public BinaryTree<ItemType> {
 private:

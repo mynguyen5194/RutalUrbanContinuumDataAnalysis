@@ -5,14 +5,14 @@
 //  Created by Team #2 on 11/12/14.
 //  Copyright (c) 2014 Team #2. All rights reserved.
 //
+
+// Hash Table is used for inserting data, searching
 #include <iostream>
 
 using namespace std;
 
 #ifndef lab5_HashTable_h
 #define lab5_HashTable_h
-
-//#define TABLE_SIZE 15
 
 template <class ItemType>
 class HashTable {
@@ -166,6 +166,10 @@ bool HashTable<ItemType>::search(const ItemType & target, ItemType & returnTarge
 
 // **************************************************
 //  remove function
+//  This function removes the entered target from the
+//  hash table or linked list if any
+//  Return: True if deleted successfully
+//          False if not
 // **************************************************
 template <class ItemType>
 bool HashTable<ItemType>::remove(const ItemType target) {
@@ -177,6 +181,8 @@ bool HashTable<ItemType>::remove(const ItemType target) {
     if (table[index].getKey() != 0) {
         ItemType * tempPtr = NULL;
         ItemType * nodePtr = &table[index];
+        
+        // Walk the nodePtr and temPtr until the target is found
         while (nodePtr->getNext() != NULL && nodePtr->getKey() != target.getKey()) {
             tempPtr = nodePtr;
             nodePtr = nodePtr->getNext();
@@ -187,20 +193,30 @@ bool HashTable<ItemType>::remove(const ItemType target) {
             if (tempPtr == NULL) {
                 delPtr = new ItemType(table[index]);
                 if (nodePtr->getNext() == NULL) {
-                    table[index].setInfo(0, "", "", 0, 0);  // Overwrite the data to delete the element in the hash table
+                    // Overwrite the data to delete the element in the hash table
+                    table[index].setInfo(0, "", "", 0, 0);
                     deleted = true;
                 }
                 else {
+                    // Swap the first node in the linked list with the table[index]
                     table[index].setInfo(nodePtr->getNext()->getKey(), nodePtr->getNext()->getState(), nodePtr->getNext()->getCounty(),
                                          nodePtr->getNext()->getPopulation(), nodePtr->getNext()->getRucc());
+                    ItemType *temp_del = nodePtr->getNext();
+                    nodePtr->setNext(temp_del->getNext());
+
+                    delete temp_del;
                     deleted = true;
                 }
             }
             // If the target is found in the linked lists
             else {
+                if (nodePtr->getNext())
+                    tempPtr->setNext(nodePtr->getNext());
+                else
+                    tempPtr->setNext(NULL);
+                
                 delete nodePtr;
                 deleted = true;
-                tempPtr->setNext(nodePtr->getNext());
             }
         }
     }
@@ -220,7 +236,7 @@ void HashTable<ItemType>::printItem(ItemType * nodePtr, bool displayList , void 
     item.setInfo(nodePtr->getKey(), nodePtr->getState(), nodePtr->getCounty(),
                  nodePtr->getPopulation(), nodePtr->getRucc());
     if (!displayList) {
-        cout << "\t\t\t  ";
+        cout << "\t       ";
     }
     visit(item);
 
