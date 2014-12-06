@@ -1,6 +1,13 @@
 /**~*~*
    Queue template
 *~**/
+/**************************************************
+ QUEUE DOCUMENTATION
+ 
+ Queue is used mainly to display the data in
+ breadth-first-traversal
+ *************************************************/
+
 #ifndef DYNAMICQUEUE_H
 #define DYNAMICQUEUE_H
 #include <iostream>

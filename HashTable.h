@@ -5,8 +5,15 @@
 //  Created by Team #2 on 11/12/14.
 //  Copyright (c) 2014 Team #2. All rights reserved.
 //
+/**************************************************
+ HASHTABLE DOCUMENTATION
+ 
+ Hash Table is used for inserting data, searching
+ data, removing data, printing data in the table
+ with and without the index, and displaying the
+ statistics.
+ *************************************************/
 
-// Hash Table is used for inserting data, searching
 #include <iostream>
 
 using namespace std;

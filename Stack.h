@@ -1,6 +1,13 @@
 /**~*~*
    Stack template
 *~**/
+
+/**************************************************
+ STACK DOCUMENTATION
+ 
+ Stack is used for the function undoDelete
+ *************************************************/
+
 #ifndef DYNAMICSTACK_H
 #define DYNAMICSTACK_H
 #include <iostream>

@@ -1,8 +1,13 @@
 #ifndef COUNTY_H
 #define COUNTY_H
 
-#include <iostream>
-#include <string>
+/***************************************************
+ COUNTY DOCUMENTATION
+ 
+ County contains all the fields of the county's
+ information, including key (FIPS), population, rucc
+ number, state name, county name, and a next pointer
+ **************************************************/
 
 using namespace std;
 

@@ -3,7 +3,7 @@
 
 #ifndef _BINARY_NODE
 #define _BINARY_NODE
-#include "County.h"
+
 template<class ItemType>
 class BinaryNode
 {   

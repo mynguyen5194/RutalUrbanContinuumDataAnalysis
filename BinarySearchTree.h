@@ -1,5 +1,14 @@
 // main test driver for BST
 // Created by Frank M. Carrano and Tim Henry.
+
+/**************************************************
+ BINARY SEARCH TREE DOCUMENTATION
+ 
+ Binary Search Tree is used to inserting data,
+ removing data, displaying the data in order, pre-
+ order, and post-order, printing the data in
+ breadth-first-traversal and indented modes.
+ *************************************************/
  
 #ifndef _BINARY_SEARCH_TREE
 #define _BINARY_SEARCH_TREE
