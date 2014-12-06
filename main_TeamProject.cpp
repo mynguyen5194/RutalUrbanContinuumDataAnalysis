@@ -143,9 +143,9 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
                 case 'D':
                     cout << " ~*~ Delete County Information ~*~\n";
                     if (!deleteCounty(countyHash, countyTree, Stack))
-                        cout << "County is not in the list\n";
+                        cout << "County is not in the list\n\n";
                     else
-                        cout << "County deleted\n";
+                        cout << "County deleted\n\n";
                     break;
                     
                 case 'S':
@@ -195,7 +195,7 @@ void menu(HashTable<County> * countyHash, BinarySearchTree<County> * countyTree,
                     break;
                     
                 case 'W':
-                    cout << "~*~ Saving data to 'RU_updated.txt' ~*~ \n";
+                    cout << "~*~ Saving data to 'RU_updated.txt' ~*~ \n\n";
                     writeToFile(countyTree, Stack);
                     break;
                     
@@ -285,13 +285,13 @@ bool searchCounty (HashTable<County> * countyHash) {
             found = true;
         }
         else {
-            cout << "The county is not in the list!\n";
+            cout << "The county is not in the list!\n\n";
             found = false;
         }
     }
     
     else
-        cout << "Invalid input!\n";
+        cout << "Invalid input!\n\n";
     return found;
 }
 
@@ -343,7 +343,7 @@ void undoDelete(HashTable<County> * countyHash, BinarySearchTree<County> * count
         }
     }
     else
-        cout << "Stack is empty!\n";
+        cout << "Stack is empty!\n\n";
     
     return;
 }
